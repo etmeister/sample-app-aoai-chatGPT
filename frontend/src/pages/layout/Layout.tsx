@@ -42,7 +42,7 @@ const Layout = () => {
                             aria-hidden="true"
                         />
                         <Link to="/" className={styles.headerTitleContainer}>
-                            <h1 className={styles.headerTitle}>UF Strategic Funding Request</h1>
+                            <h1 className={styles.headerTitle}>UF Course Scheduling Assistant</h1>
                         </Link>
                     </Stack>
                 </div>

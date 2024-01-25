@@ -8,14 +8,28 @@ import { HistoryButton, ShareButton } from "../../components/common/Button";
 import { AppStateContext } from "../../state/AppProvider";
 import { CosmosDBStatus } from "../../api";
 
+// fork code
+import UploadModal from "../components/UploadModal"
+import { BlobServiceClient } from "@azure/storage-blob";
+// end fork code
+
+
 const Layout = () => {
     const [isSharePanelOpen, setIsSharePanelOpen] = useState<boolean>(false);
     const [copyClicked, setCopyClicked] = useState<boolean>(false);
     const [copyText, setCopyText] = useState<string>("Copy URL");
     const appStateContext = useContext(AppStateContext)
 
+    // fork code
+    const [displayUploadModal, setDisplayUploadModal] = useState(true);
+    const blobSasUrl = "https://aiproposalsexample.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-01-25T22:41:11Z&st=2024-01-25T14:41:11Z&spr=https&sig=W2EYeBuB%2B%2BbtpTjFux13kG74fe8LWSXhtmAn2Gsl5lE%3D";
+    const blobServiceClient = new BlobServiceClient(blobSasUrl);
+    const containerName = "webtestcontainer"
+    const containerClient = blobServiceClient.getContainerClient(containerName);
+    // end fork code
+
     const handleShareClick = () => {
-        setIsSharePanelOpen(true);
+        setDisplayUploadModal(true);
     };
 
     const handleSharePanelDismiss = () => {
@@ -59,12 +73,21 @@ const Layout = () => {
                         {(appStateContext?.state.isCosmosDBAvailable?.status !== CosmosDBStatus.NotConfigured) &&
                             <HistoryButton onClick={handleHistoryClick} text={appStateContext?.state?.isChatHistoryOpen ? "Hide chat history" : "Show chat history"} />
                         }
+			
                         <ShareButton onClick={handleShareClick} />
                     </Stack>
 
                 </Stack>
             </header>
             <Outlet />
+	    <div className="fixed top-0 bottom-0 left-0 right-0">
+
+            <UploadModal
+	        containerClient={containerClient}
+		setDispley={setDisplayUploadModal}
+            />
+	    </div>
+
             <Dialog
                 onDismiss={handleSharePanelDismiss}
                 hidden={!isSharePanelOpen}

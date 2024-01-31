@@ -1,12 +1,17 @@
 import React, {useState, useEffect, useRef } from "react";
 import { FaDeleteLeft } from "react-icons/fa6";
+import { BlobServiceClient } from "@azure/storage-blob";
+ 
+const UploadModal = ({setDisplayUpload, displayUpload}) => {
 
-const UploadModal = ({containerClient, setDisplay}) => {
-
-    const [fileStatusMessages, setFileStatusMessages] = useState([]);
+  const [fileStatusMessages, setFileStatusMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [conversationFiles, setConversationFiles] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const blobSasUrl = import.meta.env.VITE_BUCKET_SAS_URL;
+  const blobServiceClient = new BlobServiceClient(blobSasUrl);
+  const containerName = "webtestcontainer"
+  const containerClient = blobServiceClient.getContainerClient(containerName);
 
 
 const fetchFiles = async () => {
@@ -21,9 +26,14 @@ const fetchFiles = async () => {
 }
 
 useEffect(() => {
+	console.log(blobSasUrl)
 	fetchFiles();
 }, []);
 
+useEffect(() => {
+	console.log({displayUpload});
+	console.log("Effective");
+}, [{displayUpload}]);
     
     const handleFileDelete = async (fileName) => {
         console.log(`Attempting to delete file: ${fileName}`);
@@ -81,7 +91,8 @@ useEffect(() => {
 
     return (
 	    <div>
-	    <input type="checkbox" id="my_modal_6" className="modal-toggle" defaultChecked="true" />
+           <input type="checkbox" id="my_modal_6" className="modal-toggle" checked={displayUpload} />
+
 	      <dialog className="modal backdrop-blur-[2px]">
               <div className="modal-box w-11/12 max-w-5xl border border-accent">
                 <h3 className="text-xl font-bold">Upload your files</h3>
@@ -146,7 +157,7 @@ useEffect(() => {
                   )}
                   <button
                     className="btn"
-                    onClick={()=>{document.getElementById('my_modal_6').checked = false}}
+                    onClick={()=>{console.log('close');{setDisplayUpload(false)};console.log({displayUpload})}}
                   >
                     Close
                   </button>

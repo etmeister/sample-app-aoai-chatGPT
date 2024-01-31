@@ -1,19 +1,19 @@
 #!/bin/bash
 
 echo ""
-echo "Restoring frontend npm packages"
+echo "Restoring frontend yarn packages"
 echo ""
 cd frontend
-npm install
+yarn install
 if [ $? -ne 0 ]; then
-    echo "Failed to restore frontend npm packages"
+    echo "Failed to restore frontend yarn packages"
     exit $?
 fi
 
 echo ""
 echo "Building frontend"
 echo ""
-npm run build
+yarn run build
 if [ $? -ne 0 ]; then
     echo "Failed to build frontend"
     exit $?

@@ -9,8 +9,7 @@ import { AppStateContext } from "../../state/AppProvider";
 import { CosmosDBStatus } from "../../api";
 
 // fork code
-import UploadModal from "../components/UploadModal"
-import { BlobServiceClient } from "@azure/storage-blob";
+import UploadModal from "../../components/UploadModal"
 // end fork code
 
 
@@ -20,17 +19,13 @@ const Layout = () => {
     const [copyText, setCopyText] = useState<string>("Copy URL");
     const appStateContext = useContext(AppStateContext)
 
-    // fork code
-    const [displayUploadModal, setDisplayUploadModal] = useState(true);
-    const blobSasUrl = "https://aiproposalsexample.blob.core.windows.net/?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-01-25T22:41:11Z&st=2024-01-25T14:41:11Z&spr=https&sig=W2EYeBuB%2B%2BbtpTjFux13kG74fe8LWSXhtmAn2Gsl5lE%3D";
-    const blobServiceClient = new BlobServiceClient(blobSasUrl);
-    const containerName = "webtestcontainer"
-    const containerClient = blobServiceClient.getContainerClient(containerName);
-    // end fork code
 
+    // fork code
+    const [displayUpload, setDisplayUpload] = useState<boolean>(false);
     const handleShareClick = () => {
-        setDisplayUploadModal(true);
+        setDisplayUpload(true);
     };
+    // end fork code
 
     const handleSharePanelDismiss = () => {
         setIsSharePanelOpen(false);
@@ -83,8 +78,8 @@ const Layout = () => {
 	    <div className="fixed top-0 bottom-0 left-0 right-0">
 
             <UploadModal
-	        containerClient={containerClient}
-		setDispley={setDisplayUploadModal}
+	        setDisplayUpload={setDisplayUpload}
+		displayUpload={displayUpload}
             />
 	    </div>
 

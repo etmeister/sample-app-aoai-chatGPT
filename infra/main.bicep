@@ -290,8 +290,8 @@ output AZURE_LOCATION string = location
 output AZURE_TENANT_ID string = tenant().tenantId
 output AZURE_RESOURCE_GROUP string = resourceGroup.name
 
-output BACKEND_URI string = backend.outputs.uri
-
+// output BACKEND_URI string = backend.outputs.uri
+output BACKEND_URI string = https://chat.ai.it.ufl.edu/demo
 // search
 output AZURE_SEARCH_INDEX string = searchIndexName
 output AZURE_SEARCH_SERVICE string = searchService.outputs.name

@@ -99,6 +99,20 @@ const Chat = () => {
             return;
         }
         const userInfoList = await getUserInfo();
+        var claimFound = false;
+        for (var userEntry in userInfoList) {
+          for (var claim in userInfoList[userEntry]['user_claims']) {
+             if (userInfoList[userEntry]['user_claims'][claim]['typ'] == 'roles') {
+                 if (userInfoList[userEntry]['user_claims'][claim]['val'] == 'isAdmin') {
+                      claimFound = true;
+                 }
+            }
+          }  
+        }
+        if (!claimFound) {
+	    const shareDeleteButton = document.getElementById('shareDelete')
+	    if (shareDeleteButton) shareDeleteButton.remove();
+	}
         if (userInfoList.length === 0 && window.location.hostname !== "127.0.0.1") {
             setShowAuthMessage(true);
         }
